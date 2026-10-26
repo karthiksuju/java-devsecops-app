@@ -7,39 +7,6 @@ pipeline {
 
     stages {
 
-        stage('Build') {
-            steps {
-                sh 'mvn clean package'
-            }
-        }
-
-        stage('Unit Test') {
-            steps {
-                sh 'mvn test'
-            }
-        }
-    }
-}
-stage('SonarQube Analysis') {
-    steps {
-        withSonarQubeEnv('SonarQube') {
-            sh '''
-            mvn clean verify sonar:sonar \
-            -Dsonar.projectKey=java-devsecops-app
-            '''
-        }
-    }
-}
-pipeline {
-    agent any
-
-    tools {
-        jdk 'JDK17'
-        maven 'Maven3'
-    }
-
-    stages {
-
         stage('Checkout') {
             steps {
                 checkout scm
@@ -52,7 +19,7 @@ pipeline {
             }
         }
 
-        stage('Test') {
+        stage('Unit Test') {
             steps {
                 sh 'mvn test'
             }
