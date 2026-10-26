@@ -26,16 +26,16 @@ pipeline {
         }
 
         stage('SonarQube Analysis') {
-            steps {
-                withSonarQubeEnv('SonarQube') {
-                    sh '''
-                    mvn clean verify sonar:sonar \
-                    -Dsonar.projectKey=java-devsecops-app
-                    '''
-                }
-            }
+    steps {
+        withSonarQubeEnv('SonarQube') {
+            sh '''
+            mvn clean verify \
+            org.sonarsource.scanner.maven:sonar-maven-plugin:sonar \
+            -Dsonar.projectKey=java-devsecops-app
+            '''
         }
-
+    }
+}
         stage('Quality Gate') {
             steps {
                 timeout(time: 5, unit: 'MINUTES') {
